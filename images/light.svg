@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900">
+
+  <!-- 背景 -->
+  <rect width="1200" height="900" fill="black"/>
+
+  <defs>
+    <filter id="blur">
+      <feGaussianBlur stdDeviation="25"/>
+    </filter>
+  </defs>
+
+  <!-- ■ 光（下にはみ出す） -->
+
+  <!-- 左 -->
+  <path class="target-red" filter="url(#blur)"
+    d="M250 120
+       L280 120
+       L350 980
+       L180 980
+       Z"/>
+
+  <!-- 中央 -->
+  <path class="target-green" filter="url(#blur)"
+    d="M600 120
+       L630 120
+       L700 980
+       L530 980
+       Z"/>
+
+  <!-- 右 -->
+  <path class="target-blue" filter="url(#blur)"
+    d="M950 120
+       L980 120
+       L1050 980
+       L880 980
+       Z"/>
+
+  <!-- ■ 懐中電灯 -->
+
+  <g transform="translate(265, 80)">
+    <rect x="-12" y="-50" width="24" height="40" fill="gray"/>
+  </g>
+
+  <g transform="translate(615, 80)">
+    <rect x="-12" y="-50" width="24" height="40" fill="gray"/>
+  </g>
+
+  <g transform="translate(965, 80)">
+    <rect x="-12" y="-50" width="24" height="40" fill="gray"/>
+  </g>
+
+</svg>
