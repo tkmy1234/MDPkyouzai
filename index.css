@@ -23,6 +23,54 @@ body {
     margin-left: 20px;
 }
 
+.main {
+    padding: 10px 20px;
+    margin-left: 20px;
+}
+
+h2 {
+    position: relative;
+}
+
+h2::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 7px;
+    background: repeating-linear-gradient(-45deg, #6283C2, #6283C2 2px, #fff 2px, #fff 4px);
+}
+
+.content {
+    display: flex;
+    text-align: center;
+}
+
+.contentA,
+.contentB {
+    width: 50%;
+}
+
+.btn {
+    display: inline-block;
+    padding: 50px 100px;
+    border-radius: 8px;
+    background: #6283C2;
+    color: #fff;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.btn:hover {
+    background: #4F6EAA;
+}
+
+.btn:focus-visible {
+    outline: 3px solid #f59e0b;
+    outline-offset: 2px;
+}
+
 footer {
     background-color: #6283C2;
     padding: 50px;
