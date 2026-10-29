@@ -9,16 +9,80 @@
     <header>
         <h1>加法混色・減法混色</h1>
     </header>
+
+
+
     <h1>色あてゲーム</h1>
     <p>問題</p>
     <p>スライダーを動かしてこの色を作ろう</p>
+
+    <div class="app">
+        <div class="mixed-color-box"></div>
+        <div class="rgb-panel">
+            <label class="slider-row R" for="Rrange">
+                <span>R 赤</span>
+                <output id="RValue" for="Rrange">255</output>
+            </label>
+            <input type="range" id="Rrange" class="Rrange" min="0" max="255" value="255">
+
+            <label class="slider-row G" for="Grange">
+                <span>G 緑</span>
+                <output id="GValue" for="Grange">255</output>
+            </label>
+            <input type="range" id="Grange" class="Grange" min="0" max="255" value="255">
+
+            <label class="slider-row B" for="Brange">
+                <span>B 青</span>
+                <output id="BValue" for="Brange">100%</output>
+            </label>
+            <input type="range" id="Brange" class="Brange" min="0" max="255" value="255">
+        </div>
+    </div>
+    
+
     <button>回答</button>
+
+
+
     <footer>
         <p><small>&copy; 2026 nit メディアデザインプロジェクト　兼松クラス　教材アプリ開発班</small></p>
     </footer>
 
     <script>
-        
+        const sliders={
+            r: document.querySelector("#Rrange"),
+            g: document.querySelector("#Grange"),
+            b: document.querySelector("#Brange")
+        };
+
+        const outputs={
+            r: document.querySelector("#RValue"),
+            g: document.querySelector("#GValue"),
+            b: document.querySelector("#BValue")
+        };
+
+        // 2. スライダーが動いたときに実行される関数
+        function updateColor() {
+            const r = sliders.r.value;
+            const g = sliders.g.value;
+            const b = sliders.b.value;
+
+            // CSS変数「--red-val」の値をスライダーの現在値に書き換えます
+            document.documentElement.style.setProperty("--light-r", r);
+            document.documentElement.style.setProperty("--light-g", g);
+            document.documentElement.style.setProperty("--light-b", b);
+            // 画面上の数値テキストも更新します
+            redValue.textContent = RValue;
+            redValue.textContent = GValue;
+            redValue.textContent = BValue;
+        }
+
+        // 3. スライダーが動かされた（input）ときに、関数を呼び出すイベントを設定します
+        Object.values(sliders).forEach((slider) => {
+            slider.addEventListener("input", updateColor);
+        });
     </script>
 </body>
 </html>
+
+
