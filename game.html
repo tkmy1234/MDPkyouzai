@@ -16,30 +16,56 @@
     <p>問題</p>
     <p>スライダーを動かしてこの色を作ろう</p>
 
-    <div class="app">
-        <div class="mixed-color-box"></div>
-        <div class="rgb-panel">
-            <label class="slider-row R" for="Rrange">
-                <span>R 赤</span>
-                <output id="RValue" for="Rrange">255</output>
-            </label>
-            <input type="range" id="Rrange" class="Rrange" min="0" max="255" value="255">
 
-            <label class="slider-row G" for="Grange">
-                <span>G 緑</span>
-                <output id="GValue" for="Grange">255</output>
-            </label>
-            <input type="range" id="Grange" class="Grange" min="0" max="255" value="255">
+    <div class="viewer">
+        <div class="app">
+            <div class="mixed-RGB-color-box"></div>
+            <div class="rgb-panel">
+                <label class="slider-row R" for="Rrange">
+                    <span>R 赤</span>
+                    <output id="RValue" for="Rrange">100%</output>
+                </label>
+                <input type="range" id="Rrange" class="Rrange" min="0" max="100" value="100" step="5">
 
-            <label class="slider-row B" for="Brange">
-                <span>B 青</span>
-                <output id="BValue" for="Brange">100%</output>
-            </label>
-            <input type="range" id="Brange" class="Brange" min="0" max="255" value="255">
+                <label class="slider-row G" for="Grange">
+                    <span>G 緑</span>
+                    <output id="GValue" for="Grange">0%</output>
+                </label>
+                <input type="range" id="Grange" class="Grange" min="0" max="100" value="0" step="5">
+
+                <label class="slider-row B" for="Brange">
+                    <span>B 青</span>
+                    <output id="BValue" for="Brange">0%</output>
+                </label>
+                <input type="range" id="Brange" class="Brange" min="0" max="100" value="0" step="5">
+                <p class="rgb-readout">RGB(<span id="rgbText">255,0,0</span>)</p>
+            </div>
+        </div>
+    
+        <div class="app">
+            <div class="mixed-CMY-color-box"></div>
+            <div class="cmy-panel">
+                <label class="slider-row C" for="Crange">
+                    <span>C シアン</span>
+                    <output id="CValue" for="Crange">100%</output>
+                </label>
+                <input type="range" id="Crange" class="Crange" min="0" max="100" value="100" step="5">
+
+                <label class="slider-row M" for="Mrange">
+                    <span>M マゼンタ</span>
+                    <output id="MValue" for="Mrange">0%</output>
+                </label>
+                <input type="range" id="Mrange" class="Mrange" min="0" max="100" value="0" step="5">
+
+                <label class="slider-row Y" for="Yrange">
+                    <span>Y イエロー</span>
+                    <output id="YValue" for="Yrange">0%</output>
+                </label>
+                <input type="range" id="Yrange" class="Yrange" min="0" max="100" value="0" step="5">
+                <p class="cmy-readout">CMY(<span id="cmyText">255,0,0</span>)</p>
+            </div>
         </div>
     </div>
-    
-
     <button>回答</button>
 
 
@@ -49,37 +75,95 @@
     </footer>
 
     <script>
-        const sliders={
+        const RGBsliders={
             r: document.querySelector("#Rrange"),
             g: document.querySelector("#Grange"),
-            b: document.querySelector("#Brange")
+            b: document.querySelector("#Brange"),
+        };
+
+        const CMYsliders={
+            c: document.querySelector("#Crange"),
+            m: document.querySelector("#Mrange"),
+            y: document.querySelector("#Yrange"),
         };
 
         const outputs={
             r: document.querySelector("#RValue"),
             g: document.querySelector("#GValue"),
-            b: document.querySelector("#BValue")
+            b: document.querySelector("#BValue"),
+
+            c: document.querySelector("#CValue"),
+            m: document.querySelector("#MValue"),
+            y: document.querySelector("#YValue"),
         };
 
-        // 2. スライダーが動いたときに実行される関数
-        function updateColor() {
-            const r = sliders.r.value;
-            const g = sliders.g.value;
-            const b = sliders.b.value;
+        
 
-            // CSS変数「--red-val」の値をスライダーの現在値に書き換えます
+        const rgbText=document.querySelector("#rgbText");
+        const cmyText=document.querySelector("#cmyText");
+
+        // 2. スライダーが動いたときに実行される関数
+        function updateRGBColor() {
+            const rPercent = RGBsliders.r.value;
+            const gPercent = RGBsliders.g.value;
+            const bPercent = RGBsliders.b.value;
+
+            // ★ 0〜100の値を、CSSや色計算で使う「0〜255」の数値に変換します（割合 × 2.55）
+            const r = Math.round((rPercent / 100) * 255);
+            const g = Math.round((gPercent / 100) * 255);
+            const b = Math.round((bPercent / 100) * 255);
+
+            // CSS変数の値を書き換えます[cite: 5]
             document.documentElement.style.setProperty("--light-r", r);
             document.documentElement.style.setProperty("--light-g", g);
             document.documentElement.style.setProperty("--light-b", b);
-            // 画面上の数値テキストも更新します
-            redValue.textContent = RValue;
-            redValue.textContent = GValue;
-            redValue.textContent = BValue;
+
+            // 画面上のパーセント表示を更新します
+            outputs.r.textContent = rPercent + "%";
+            outputs.g.textContent = gPercent + "%";
+            outputs.b.textContent = bPercent + "%";
+            rgbText.textContent=`${r},${g},${b}`;
         }
 
+        function updateCMYColor() {
+            const cPercent = CMYsliders.c.value;
+            const mPercent = CMYsliders.m.value;
+            const yPercent = CMYsliders.y.value;
+
+            // 2. 【% ➔ RGB(255)に変換】
+            // インクの量から、それを打ち消す光の量を逆算します
+            const r255 = Math.round(255 * (1 - cPercent / 100));
+            const g255 = Math.round(255 * (1 - mPercent / 100));
+            const b255 = Math.round(255 * (1 - yPercent / 100));
+
+            // 3. 【RGB(255) ➔ CMY(255)に変換】
+            // 減法混色の仕組み（255から引く計算）でインクの数値を求めます
+            const c = 255 - r255;
+            const m = 255 - g255;
+            const y = 255 - b255;
+
+
+            // CSS変数の値を書き換えます[cite: 5]
+            document.documentElement.style.setProperty("--light-c", r255);
+            document.documentElement.style.setProperty("--light-m", g255);
+            document.documentElement.style.setProperty("--light-y", b255);
+
+
+            // 画面上のパーセント表示を更新します
+            outputs.c.textContent = cPercent + "%";
+            outputs.m.textContent = mPercent + "%";
+            outputs.y.textContent = yPercent + "%";
+            cmyText.textContent=`${c},${m},${y}`;
+        }
+
+
         // 3. スライダーが動かされた（input）ときに、関数を呼び出すイベントを設定します
-        Object.values(sliders).forEach((slider) => {
-            slider.addEventListener("input", updateColor);
+        Object.values(RGBsliders).forEach((RGBslider) => {
+            RGBslider.addEventListener("input", updateRGBColor);
+        });
+
+        Object.values(CMYsliders).forEach((CMYslider) => {
+            CMYslider.addEventListener("input", updateCMYColor);
         });
     </script>
 </body>

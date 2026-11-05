@@ -43,11 +43,24 @@ footer p {
 :root {
   /* JavaScriptからリアルタイムに書き換えられる赤の数値（初期値: 255） */
   --light-r: 255;
-  --light-g: 255;
-  --light-b: 255;
+  --light-g: 0;
+  --light-b: 0;
+
+  --light-c: 0;
+  --light-m: 255;
+  --light-y: 255;
 }
 
-
+.viewer {
+  width: min(1000px, 100%);
+  margin: 20px auto;
+  display: grid;
+  /* 左右に1:1の比率で2カラムに配置する */
+  grid-template-columns: 1fr 1fr;
+  gap: 32px; /* 左右のパネルの間隔 */
+  align-items: start;
+  padding: 0 20px;
+}
 
 .app {
   background: #ffffff;
@@ -58,21 +71,40 @@ footer p {
 }
 
 /* 色が変わる四角いボックス */
-.mixed-color-box {
+.mixed-RGB-color-box {
   width: 100%;
   height: 100px;
   border-radius: 8px;
   margin-bottom: 24px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(0, 0, 0, 1);
   
-  /* CSS変数(--red-val)を使って、緑と青を0にした「赤色」の変化を作ります */
+  /* CSS変数を使用 */
   background-color: rgb(var(--light-r), var(--light-g), var(--light-b));
   
   /* 色がなめらかに変化するようにアニメーションを設定 */
   transition: background-color 50ms linear;
 }
 
+.mixed-CMY-color-box {
+  width: 100%;
+  height: 100px;
+  border-radius: 8px;
+  margin-bottom: 24px;
+  border: 1px solid rgba(0, 0, 0, 1);
+  
+  /* CSS変数を使用 */
+  background-color: rgb(var(--light-c), var(--light-m), var(--light-y));
+  
+  /* 色がなめらかに変化するようにアニメーションを設定 */
+  transition: background-color 50ms linear;
+}
+
 .rgb-panel {
+  display: flex;
+  flex-direction: column;
+}
+
+.cmy-panel {
   display: flex;
   flex-direction: column;
 }
@@ -84,19 +116,27 @@ footer p {
   font-weight: bold;
 }
 
-.slider-row.red { color: #ff4d6d; }
-.slider-row.green { color: #2ec4b6; }
-.slider-row.blue { color: #3a86ff; }
+.slider-row.R { color: #ff0000; }
+.slider-row.G { color: #00ff00; }
+.slider-row.B { color: #0000ff; }
+
+.slider-row.C { color: #00a1e9; }
+.slider-row.M { color: #e4007f; }
+.slider-row.Y { color: #ffdc00; }
 
 output {
   font-family: monospace;
 }
 
-.slider {
+.RGBsliders {
   width: 100%;
   cursor: pointer;
 }
 
-.slider.red { accent-color: #ff4d6d; }
-.slider.green { accent-color: #2ec4b6; }
-.slider.blue { accent-color: #3a86ff; }
+.Rrange { accent-color: #ff0000; }
+.Grange { accent-color: #00ff00; }
+.Brange { accent-color: #0000ff; }
+
+.Crange { accent-color: #00a1e9; }
+.Mrange { accent-color: #e4007f; }
+.Yrange { accent-color: #ffdc00; }
