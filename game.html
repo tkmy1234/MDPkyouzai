@@ -16,8 +16,8 @@
     <p>問題</p>
     <p>スライダーを動かしてこの色を作ろう</p>
 
-
     <div class="viewer">
+        <!-- 加法混色 -->
         <div class="app">
             <div class="mixed-RGB-color-box"></div>
             <div class="rgb-panel">
@@ -42,6 +42,7 @@
             </div>
         </div>
     
+        <!-- 減法混色 -->
         <div class="app">
             <div class="mixed-CMY-color-box"></div>
             <div class="cmy-panel">
@@ -102,29 +103,30 @@
         const rgbText=document.querySelector("#rgbText");
         const cmyText=document.querySelector("#cmyText");
 
-        // 2. スライダーが動いたときに実行される関数
+        // 2. RGBスライダーが動いたときに実行される関数
         function updateRGBColor() {
             const rPercent = RGBsliders.r.value;
             const gPercent = RGBsliders.g.value;
             const bPercent = RGBsliders.b.value;
 
-            // ★ 0〜100の値を、CSSや色計算で使う「0〜255」の数値に変換します（割合 × 2.55）
+            // ★ 0〜100の%の値を、CSSや色計算で使う16進数「0〜255」の数値に変換
             const r = Math.round((rPercent / 100) * 255);
             const g = Math.round((gPercent / 100) * 255);
             const b = Math.round((bPercent / 100) * 255);
 
-            // CSS変数の値を書き換えます[cite: 5]
+            // CSS変数の値を書き換え
             document.documentElement.style.setProperty("--light-r", r);
             document.documentElement.style.setProperty("--light-g", g);
             document.documentElement.style.setProperty("--light-b", b);
 
-            // 画面上のパーセント表示を更新します
+            // 画面上のパーセント表示を更新
             outputs.r.textContent = rPercent + "%";
             outputs.g.textContent = gPercent + "%";
             outputs.b.textContent = bPercent + "%";
             rgbText.textContent=`${r},${g},${b}`;
         }
 
+        // 2. CMYスライダーが動いたときに実行される関数
         function updateCMYColor() {
             const cPercent = CMYsliders.c.value;
             const mPercent = CMYsliders.m.value;
@@ -143,13 +145,14 @@
             const y = 255 - b255;
 
 
-            // CSS変数の値を書き換えます[cite: 5]
+            // CSS変数の値を書き換え
+            // スライダーはRGBのままなので、CMYの値を直接代入はせずに、打ち消す光の量(RGBのフィルター)の値を代入
             document.documentElement.style.setProperty("--light-c", r255);
             document.documentElement.style.setProperty("--light-m", g255);
             document.documentElement.style.setProperty("--light-y", b255);
 
 
-            // 画面上のパーセント表示を更新します
+            // 画面上のパーセント表示を更新
             outputs.c.textContent = cPercent + "%";
             outputs.m.textContent = mPercent + "%";
             outputs.y.textContent = yPercent + "%";
@@ -157,11 +160,12 @@
         }
 
 
-        // 3. スライダーが動かされた（input）ときに、関数を呼び出すイベントを設定します
+        // 3. RGBスライダーが動かされた（input）ときに、関数を呼び出すイベントを設定
         Object.values(RGBsliders).forEach((RGBslider) => {
             RGBslider.addEventListener("input", updateRGBColor);
         });
 
+        // 3. CMYスライダーが動かされた（input）ときに、関数を呼び出すイベントを設定
         Object.values(CMYsliders).forEach((CMYslider) => {
             CMYslider.addEventListener("input", updateCMYColor);
         });

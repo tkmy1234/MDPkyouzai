@@ -41,7 +41,7 @@ footer p {
 
 
 :root {
-  /* JavaScriptからリアルタイムに書き換えられる赤の数値（初期値: 255） */
+  /* JavaScriptからリアルタイムに書き換えられる数値 */
   --light-r: 255;
   --light-g: 0;
   --light-b: 0;
@@ -55,7 +55,7 @@ footer p {
   width: min(1000px, 100%);
   margin: 20px auto;
   display: grid;
-  /* 左右に1:1の比率で2カラムに配置する */
+  /* 左右に1:1の比率配置 */
   grid-template-columns: 1fr 1fr;
   gap: 32px; /* 左右のパネルの間隔 */
   align-items: start;
@@ -81,7 +81,7 @@ footer p {
   /* CSS変数を使用 */
   background-color: rgb(var(--light-r), var(--light-g), var(--light-b));
   
-  /* 色がなめらかに変化するようにアニメーションを設定 */
+  /* 色がなめらかに変化するアニメーション */
   transition: background-color 50ms linear;
 }
 
@@ -95,7 +95,7 @@ footer p {
   /* CSS変数を使用 */
   background-color: rgb(var(--light-c), var(--light-m), var(--light-y));
   
-  /* 色がなめらかに変化するようにアニメーションを設定 */
+  /* 色がなめらかに変化するアニメーション */
   transition: background-color 50ms linear;
 }
 
