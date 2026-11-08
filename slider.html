@@ -15,6 +15,147 @@
     <div id="main">
         <p>このサイトでは、加法混色・減法混色について学べます。​<br />
             解説を読んでクイズに挑戦してみましょう。​</p>
+
+        
+   <main class="app">
+    <div class="box">
+      <div class="header">
+        <h1>色の混ざり方の仕組みを学ぼう</h1>
+        <h2>スライダーを動かして左右(RGBとCMY)で同じ色を作ろう</h2>
+      </div>
+
+      <section class="viewer" aria-label="&#30011;&#20687;&#12398;&#33394;&#22793;&#26356;&#12487;&#12514;">
+        <!-- JavaScriptで外部SVGを読み込み、この中に挿入する場所です。 -->
+
+        <div class="controls">
+
+          <div class="panel">
+            <h2>RGB（光）</h2>
+            <div id="svgArea" class="image-frame" role="img"
+              aria-label="&#23665;&#12392;&#28246;&#12398;&#12452;&#12521;&#12473;&#12488;">
+            </div>
+            <div class="swatches" aria-hidden="true">
+              <span id="rgbColor" class="selected-color"></span>
+            </div>
+
+          <div class="readout-row">
+            <p class="rgb-readout">↓スライダー　　　<b>混ぜた結果↑</b><!--rgb(<span id="rgbText">58, 12, 163</span>)--></p>
+
+            <p id="rgbCode" class="color-code"></p>
+          </div>
+            <!-- 0から255までの値を使って、RGBそれぞれの成分を調整します。 -->
+            <div class="rgb-panel" aria-label="RGB&#12467;&#12531;&#12488;&#12525;&#12540;&#12523;">
+              <label class="slider-row red" for="redRange">
+                <span>R 赤</span>
+                <output id="redValue" for="redRange">100</output>
+              </label>
+              <input id="redRange" class="slider red" type="range" min="0" max="255" value="100">
+
+              <label class="slider-row green" for="greenRange">
+                <span>G 緑</span>
+                <output id="greenValue" for="greenRange">12</output>
+              </label>
+              <input id="greenRange" class="slider green" type="range" min="0" max="255" value="12">
+
+              <label class="slider-row blue" for="blueRange">
+                <span>B 青</span>
+                <output id="blueValue" for="blueRange">163</output>
+              </label>
+              <input id="blueRange" class="slider blue" type="range" min="0" max="255" value="163">
+            </div>
+          
+          <button id="rgbResetButton">初期化</button>
+            
+          </div>
+          
+          <div class="panel">
+            <h2>CMY（インク）</h2>
+            <div id="svgArea2" class="image-frame" role="img"
+              aria-label="&#23665;&#12392;&#28246;&#12398;&#12452;&#12521;&#12473;&#12488;">
+            </div>
+            <div class="swatches" aria-hidden="true">
+              <span id="cmyColor" class="selected-color"></span>
+            </div>
+
+          <div class="readout-row">
+            <p class="rgb-readout">↓スライダー　　　<b>混ぜた結果↑</b><!--cmy(<span id="cmyText">58, 12, 163</span>)--></p>
+
+             <p id="cmyCode" class="color-code"></p>
+          </div>
+            <!-- 0から255までの値を使って、RGBそれぞれの成分を調整します。 -->
+            <div class="cmy-panel" aria-label="CMY&#12467;&#12531;&#12488;&#12525;&#12540;&#12523;">
+              <label class="slider-row cyan" for="cyanRange">
+                <span>C シアン</span>
+                <output id="cyanValue" for="cyanRange">100</output>
+              </label>
+              <input id="cyanRange" class="slider cyan" type="range" min="0" max="255" value="100">
+
+              <label class="slider-row magenta" for="magentaRange">
+                <span>M マゼンタ</span>
+                <output id="magentaValue" for="magentaRange">12</output>
+              </label>
+              <input id="magentaRange" class="slider magenta" type="range" min="0" max="255" value="12">
+
+              <label class="slider-row yellow" for="yellowRange">
+                <span>Y イエロー</span>
+                <output id="yellowValue" for="yellowRange">163</output>
+              </label>
+              <input id="yellowRange" class="slider yellow" type="range" min="0" max="255" value="163">
+            </div>
+
+            <button id="cmyResetButton">初期化</button>
+
+          </div>
+        </div>
+
+    </div>
+    </section>
+    <!-- 画面右側 -->
+    <div class="kaisetsu">
+      <h1>解説</h1>
+
+      <!-- 開いてるカード -->
+      <div class="accordion open">
+        <div class="title">RGBとは</div>
+        <div class="content">
+          <img src="rgb.jpg" alt="RGBのイメージ">
+          <p>RGBはテレビやスマホの画面で使われる。</p>
+          <p>赤・緑・青の光を足して色を作る。</p>
+          <p>光を増やすほど白に近づく。</p>
+        </div>
+      </div>
+
+      <div class="accordion open">
+        <div class="title">CMYとは</div>
+        <div class="content">
+          <img src="cmy.jpg" alt="CMYのイメージ">
+          <p>CMYは絵具やインクで使われる。</p>
+          <p>光を消して色を作る。</p>
+          <p>色を重ねるほど黒に近づく。</p>
+        </div>
+      </div>
+
+      <!-- 閉じてるカード -->
+      <div class="accordion">
+        <div class="title">RGBはなぜこの三つの色なの？</div>
+        <div class="content">
+          <p>人間の目は赤・緑・青の光を感じるのが得意。</p>
+          <p>この三つの光を混ぜると、たくさんの色を作れる。</p>
+          <p>実際に動かして、いろんな色を作ってみよう！</p>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <div class="title">CMYはなぜこの三つの色なの？</div>
+        <div class="content">
+          <p>CMYはRGBの光を消すための色。</p>
+          <p>シアンは赤を消し、マゼンタは緑を消し、イエローは青を消す。</p>
+          <p>RGBで緑と青を100％、cmyでシアンのみ100％、その他を0％にしてみよう！</p>
+        </div>
+      </div>
+    </div>
+  </main>    
+
     </div>
 
 
@@ -22,6 +163,174 @@
         <p><small>&copy; 2026 nit メディアデザインプロジェクト　兼松クラス　教材アプリ開発班</small></p>
     </footer>
 
+    <script>
+    // 外部SVGを挿入するHTML側の受け皿です。
+    const svgArea = document.querySelector("#svgArea");
+    const svgArea2 = document.querySelector("#svgArea2");
+
+    // 3本のスライダーをまとめて扱えるようにしておきます。
+    const rgbSliders = {
+      r: document.querySelector("#redRange"),
+      g: document.querySelector("#greenRange"),
+      b: document.querySelector("#blueRange")
+    };
+
+    const cmySliders = {
+      c: document.querySelector("#cyanRange"),
+      m: document.querySelector("#magentaRange"),
+      y: document.querySelector("#yellowRange")
+    };
+
+    // スライダー横に表示する現在値です。
+    const rgbOutputs = {
+      r: document.querySelector("#redValue"),
+      g: document.querySelector("#greenValue"),
+      b: document.querySelector("#blueValue")
+    };
+
+    const cmyOutputs = {
+      c: document.querySelector("#cyanValue"),
+      m: document.querySelector("#magentaValue"),
+      y: document.querySelector("#yellowValue")
+    };
+
+    const rgbText = document.querySelector("#rgbText");
+    const cmyText = document.querySelector("#cmyText");
+    const rgbCode = document.querySelector("#rgbCode");
+    const cmyCode = document.querySelector("#cmyCode");
+
+    function updateRGBColor() {
+      // スライダーの値を取得して、CSS変数に渡します。
+      const r = rgbSliders.r.value;
+      const g = rgbSliders.g.value;
+      const b = rgbSliders.b.value;
+
+      // style.cssの.target-objectが、このCSS変数を使って山の色を決めます。
+      document.documentElement.style.setProperty("--target-r", r);
+      document.documentElement.style.setProperty("--target-g", g);
+      document.documentElement.style.setProperty("--target-b", b);
+
+      // 画面上の数値表示も、スライダーの値と同じになるよう更新します。
+
+      rgbOutputs.r.textContent = Math.round(r / 255 * 100) + "%";
+      rgbOutputs.g.textContent = Math.round(g / 255 * 100) + "%";
+      rgbOutputs.b.textContent = Math.round(b / 255 * 100) + "%";
+      const rgbHex =
+        "#" +
+        Number(r).toString(16).padStart(2, "0") +
+        Number(g).toString(16).padStart(2, "0") +
+        Number(b).toString(16).padStart(2, "0");
+
+      rgbCode.textContent =
+        "カラーコード：" + rgbHex.toUpperCase();
+
+      //rgbText.textContent = `${r}, ${g}, ${b}`;
+    }
+
+    function updateCMYColor() {
+      // スライダーの値を取得して、CSS変数に渡します。
+      const c = cmySliders.c.value;
+      const m = cmySliders.m.value;
+      const y = cmySliders.y.value;
+
+      const r = 255 - c;
+      const g = 255 - m;
+      const b = 255 - y;
+
+      // style.cssの.target-objectが、このCSS変数を使って山の色を決めます。
+      document.documentElement.style.setProperty("--cmy-c", c);
+      document.documentElement.style.setProperty("--cmy-m", m);
+      document.documentElement.style.setProperty("--cmy-y", y);
+
+      // 画面上の数値表示も、スライダーの値と同じになるよう更新します。
+      cmyOutputs.c.textContent = Math.round(c / 255 * 100) + "%";
+      cmyOutputs.m.textContent = Math.round(m / 255 * 100) + "%";
+      cmyOutputs.y.textContent = Math.round(y / 255 * 100) + "%";
+      const cmyHex =
+        "#" +
+        Number(r).toString(16).padStart(2, "0") +
+        Number(g).toString(16).padStart(2, "0") +
+        Number(b).toString(16).padStart(2, "0");
+
+      cmyCode.textContent =
+        "カラーコード：" + cmyHex.toUpperCase();
+      //cmyText.textContent =`${Math.round(c / 255 * 100)}%, ` +`${Math.round(m / 255 * 100)}%, ` +`${Math.round(y / 255 * 100)}%`;
+
+      //cmyのスウォッチを変換
+      document.querySelectorAll(".swatches")[1]
+        .querySelector(".selected-color")
+        .style.background = `rgb(${r}, ${g}, ${b})`;
+    }
+
+    async function loadSvg() {
+      // <img>ではSVG内部を操作しづらいので、fetchで文字列として読み込みます。
+      const response = await fetch("light.svg");
+      const svgText = await response.text();
+
+      const response2 = await fetch("ink.svg");
+      const svgText2 = await response2.text();
+
+      // 読み込んだSVGをHTML内に挿入すると、CSSやJavaScriptから中のpathを操作できます。
+      // 左（RGB）
+      svgArea.innerHTML = svgText;
+      const svg1 = svgArea.querySelector("svg");
+      svg1.classList.add("color-image");
+
+      // 右（CMY）
+      svgArea2.innerHTML = svgText2;
+      const svg2 = svgArea2.querySelector("svg");
+      svg2.classList.add("color-image");
+
+      updateRGBColor();
+      updateCMYColor();
+
+    }
+
+    // スライダーを動かすたびに、CSS変数と表示値を更新します。
+    Object.values(rgbSliders).forEach((slider) => {
+      slider.addEventListener("input", updateRGBColor);
+    });
+
+
+    Object.values(cmySliders).forEach((slider) => {
+      slider.addEventListener("input", updateCMYColor);
+    });
+
+
+    loadSvg();
+
+
+    document.querySelectorAll('.title').forEach(title => {
+      title.addEventListener('click', () => {
+        const accordion = title.parentElement;
+        accordion.classList.toggle('open');
+      });
+    });
+
+    document
+      .querySelector("#rgbResetButton")
+      .addEventListener("click", () => {
+
+        rgbSliders.r.value = 100;
+        rgbSliders.g.value = 12;
+        rgbSliders.b.value = 163;
+
+        updateRGBColor();
+    });
+
+    document
+      .querySelector("#cmyResetButton")
+      .addEventListener("click", () => {
+
+       cmySliders.c.value = 100;
+       cmySliders.m.value = 12;
+       cmySliders.y.value = 163;
+
+       updateCMYColor();
+   });
+
+  </script>
+  
 </body>
 
 </html>
