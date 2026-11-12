@@ -54,6 +54,8 @@ h2::after {
 
 .images {
     display: flex;
+    justify-content: center;
+    gap: 20px;
 }
 
 .btn {
