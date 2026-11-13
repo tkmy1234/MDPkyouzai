@@ -42,24 +42,28 @@ footer p {
 
 :root {
   /* JavaScriptからリアルタイムに書き換えられる数値 */
-  --light-r: 255;
+  --light-r: 0;
   --light-g: 0;
   --light-b: 0;
 
-  --light-c: 0;
+  --light-c: 255;
   --light-m: 255;
   --light-y: 255;
 }
 
 .viewer {
-  width: min(1000px, 100%);
+  width: 100%;
   margin: 20px auto;
   display: grid;
-  /* 左右に1:1の比率配置 */
   grid-template-columns: 1fr 1fr;
-  gap: 32px; /* 左右のパネルの間隔 */
-  align-items: start;
-  padding: 0 20px;
+  gap: 32px;
+  align-items: stretch; /* 左右のカラムの高さを自動で同じにする */
+  box-sizing: border-box;
+}
+
+.app-right-container {
+  display: flex;
+  flex-direction: column;
 }
 
 .app {
@@ -67,36 +71,37 @@ footer p {
   padding: 32px;
   border-radius: 12px;
   box-shadow: 0 10px 30px rgba(162, 158, 158, 0.5);
-  width: 320px;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+.app h3 {
+  margin: 0 0 16px 0;
+  font-size: 1.2rem;
+  text-align: center;
+  color: #333;
 }
 
 /* 色が変わる四角いボックス */
-.mixed-RGB-color-box {
+.color-box {
   width: 100%;
-  height: 100px;
+  height: 140px;
   border-radius: 8px;
   margin-bottom: 24px;
   border: 1px solid rgba(0, 0, 0, 1);
-  
-  /* CSS変数を使用 */
-  background-color: rgb(var(--light-r), var(--light-g), var(--light-b));
-  
-  /* 色がなめらかに変化するアニメーション */
+  box-sizing: border-box;
   transition: background-color 50ms linear;
 }
 
+.mixed-RGB-color-box {
+  background-color: rgb(var(--light-r), var(--light-g), var(--light-b));
+}
+
 .mixed-CMY-color-box {
-  width: 100%;
-  height: 100px;
-  border-radius: 8px;
-  margin-bottom: 24px;
-  border: 1px solid rgba(0, 0, 0, 1);
-  
-  /* CSS変数を使用 */
   background-color: rgb(var(--light-c), var(--light-m), var(--light-y));
-  
-  /* 色がなめらかに変化するアニメーション */
-  transition: background-color 50ms linear;
 }
 
 .rgb-panel {
@@ -140,3 +145,108 @@ output {
 .Crange { accent-color: #00a1e9; }
 .Mrange { accent-color: #e4007f; }
 .Yrange { accent-color: #ffdc00; }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.mode-buttons {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.tab-btn {
+  flex: 1;
+  padding: 12px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  border: 2px solid #6283C2;
+  background-color: #ffffff;
+  color: #6283C2;
+  border-radius: 8px;
+  transition: all 0.2s;
+}
+
+/* ボタンが選ばれているときの色 */
+.tab-btn.active {
+  background-color: #6283C2;
+  color: #ffffff;
+}
+
+/* パネルの表示・非表示の切り替え */
+.panel {
+  display: none; /* 初期状態では両方とも隠す */
+}
+
+.panel.active {
+  display: flex; /* activeが付いているパネルだけを表示する */
+}
+
+/* 不正解時のヒント（ハイライト）テキスト */
+.hint-text {
+  font-size: 0.9rem;
+  color: #ff4d6d;
+  font-weight: bold;
+  margin: 0 0 12px 0;
+  height: 1.2em; /* 1行分の高さを常に確保 */
+  visibility: hidden; /* 最初は透明にして場所だけ残す */
+}
+
+.correct-val {
+  background-color: #ffe5ed;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+/* アクションエリア（回答ボタン・メッセージ・次の問題ボタン） */
+.action-area {
+  text-align: center;
+  margin-top: auto;
+  margin-bottom: auto;
+  padding-top: 20px;
+}
+
+.main-btn {
+  padding: 12px 30px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 8px;
+  border: none;
+  background-color: #6283C2;
+  color: white;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  transition: background-color 0.2s;
+}
+
+.main-btn:hover {
+  background-color: #4f6ca8;
+}
+
+.next-btn {
+  background-color: #2ec4b6;
+}
+
+.next-btn:hover {
+  background-color: #259d92;
+}
+
+.result-msg {
+  font-size: 1.05rem;
+  font-weight: bold;
+  margin-top: 20px;
+  min-height: 2.8em;
+  visibility: hidden;
+}

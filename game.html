@@ -11,63 +11,97 @@
     </header>
 
 
-
-    <h1>色あてゲーム</h1>
-    <p>問題</p>
-    <p>スライダーを動かしてこの色を作ろう</p>
-
-    <div class="viewer">
-        <!-- 加法混色 -->
-        <div class="app">
-            <div class="mixed-RGB-color-box"></div>
-            <div class="rgb-panel">
-                <label class="slider-row R" for="Rrange">
-                    <span>R 赤</span>
-                    <output id="RValue" for="Rrange">100%</output>
-                </label>
-                <input type="range" id="Rrange" class="Rrange" min="0" max="100" value="100" step="5">
-
-                <label class="slider-row G" for="Grange">
-                    <span>G 緑</span>
-                    <output id="GValue" for="Grange">0%</output>
-                </label>
-                <input type="range" id="Grange" class="Grange" min="0" max="100" value="0" step="5">
-
-                <label class="slider-row B" for="Brange">
-                    <span>B 青</span>
-                    <output id="BValue" for="Brange">0%</output>
-                </label>
-                <input type="range" id="Brange" class="Brange" min="0" max="100" value="0" step="5">
-                <p class="rgb-readout">RGB(<span id="rgbText">255,0,0</span>)</p>
-            </div>
+    <main>
+        <h1>色あてゲーム</h1>
+        <h2>問題:下の「お題の色」と同じになるようにスライダーを動かそう</h2>
+        <div class="mode-buttons">
+            <button id="btnRgb" class="tab-btn active">光の三原色 (加法混色)</button>
+            <button id="btnCmy" class="tab-btn">色の三原色 (減法混色)</button>
         </div>
+
+        
+
+        
+
+        <div class="viewer">
+
+            <div class="app">
+                <h3>【お題の色】</h3>
+                <div id="targetBox" class="color-box question-color-box"></div>
+                <div class="action-area">
+                    <button id="submitBtn" class="main-btn">回答する</button>
+                    <p id="resultMessage" class="result-msg"></p>
+                    <button id="nextBtn" class="main-btn next-btn" style="display: none;">次の問題へ進む</button>
+                </div>
+            </div>
+
+            <div class="app-right-container">
+                <!-- 加法混色 -->
+                <div class="app panel active" id="rgbPanel">
+                    <h3>あなたの作った色</h3>
+                    <div class="color-box mixed-RGB-color-box"></div>
+                    <div class="rgb-panel">
+                        <label class="slider-row R" for="Rrange">
+                            <span>R 赤</span>
+                            <output id="RValue" for="Rrange">0%</output>
+                        </label>
+                        <input type="range" id="Rrange" class="Rrange" min="0" max="100" value="0" step="10">
+                        <!-- 正解のヒント表示用 -->
+                        <p class="hint-text" id="hintR">正解の赤: <span class="correct-val">--%</span></p>
+
+                        <label class="slider-row G" for="Grange">
+                            <span>G 緑</span>
+                            <output id="GValue" for="Grange">0%</output>
+                        </label>
+                        <input type="range" id="Grange" class="Grange" min="0" max="100" value="0" step="10">
+                        <p class="hint-text" id="hintG">正解の緑: <span class="correct-val">--%</span></p>
+
+                        <label class="slider-row B" for="Brange">
+                            <span>B 青</span>
+                            <output id="BValue" for="Brange">0%</output>
+                        </label>
+                        <input type="range" id="Brange" class="Brange" min="0" max="100" value="0" step="10">
+                        <p class="hint-text" id="hintB">正解の青: <span class="correct-val">--%</span></p>
+                        <p class="rgb-readout">RGB(<span id="rgbText">0,0,0</span>)</p>
+                    </div>
+                </div>
     
-        <!-- 減法混色 -->
-        <div class="app">
-            <div class="mixed-CMY-color-box"></div>
-            <div class="cmy-panel">
-                <label class="slider-row C" for="Crange">
-                    <span>C シアン</span>
-                    <output id="CValue" for="Crange">100%</output>
-                </label>
-                <input type="range" id="Crange" class="Crange" min="0" max="100" value="100" step="5">
+                <!-- 減法混色 -->
+                <div class="app panel" id="cmyPanel">
+                    <h3>あなたの作った色</h3>
+                    <div class="color-box mixed-CMY-color-box"></div>
+                    <div class="cmy-panel">
+                        <label class="slider-row C" for="Crange">
+                            <span>C シアン</span>
+                            <output id="CValue" for="Crange">0%</output>
+                        </label>
+                        <input type="range" id="Crange" class="Crange" min="0" max="100" value="0" step="10">
+                        <!-- ★追加：CMYのヒント表示用 -->
+                        <p class="hint-text" id="hintC">正解のシアン: <span class="correct-val">--%</span></p>
 
-                <label class="slider-row M" for="Mrange">
-                    <span>M マゼンタ</span>
-                    <output id="MValue" for="Mrange">0%</output>
-                </label>
-                <input type="range" id="Mrange" class="Mrange" min="0" max="100" value="0" step="5">
+                        <label class="slider-row M" for="Mrange">
+                            <span>M マゼンタ</span>
+                            <output id="MValue" for="Mrange">0%</output>
+                        </label>
+                        <input type="range" id="Mrange" class="Mrange" min="0" max="100" value="0" step="10">
+                        <!-- ★追加 -->
+                        <p class="hint-text" id="hintM">正解のマゼンタ: <span class="correct-val">--%</span></p>
 
-                <label class="slider-row Y" for="Yrange">
-                    <span>Y イエロー</span>
-                    <output id="YValue" for="Yrange">0%</output>
-                </label>
-                <input type="range" id="Yrange" class="Yrange" min="0" max="100" value="0" step="5">
-                <p class="cmy-readout">CMY(<span id="cmyText">255,0,0</span>)</p>
+                        <label class="slider-row Y" for="Yrange">
+                            <span>Y イエロー</span>
+                            <output id="YValue" for="Yrange">0%</output>
+                        </label>
+                        <input type="range" id="Yrange" class="Yrange" min="0" max="100" value="0" step="10">
+                        <!-- ★追加 -->
+                        <p class="hint-text" id="hintY">正解のイエロー: <span class="correct-val">--%</span></p>
+
+                        <p class="cmy-readout">CMY(<span id="cmyText">0,0,0</span>)</p>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-    <button>回答</button>
+    </main>
+    
 
 
 
@@ -169,6 +203,151 @@
         Object.values(CMYsliders).forEach((CMYslider) => {
             CMYslider.addEventListener("input", updateCMYColor);
         });
+
+
+
+
+
+
+
+        // --- 3. ボタンによるパネルの切り替え処理 ---
+        const btnRgb = document.querySelector("#btnRgb");
+        const btnCmy = document.querySelector("#btnCmy");
+        const rgbPanel = document.querySelector("#rgbPanel");
+        const cmyPanel = document.querySelector("#cmyPanel");
+
+        btnRgb.addEventListener("click", () => {
+            // ボタンのアクティブ状態を切り替え
+            btnRgb.classList.add("active");
+            btnCmy.classList.remove("active");
+            // パネルの表示を切り替え
+            rgbPanel.classList.add("active");
+            cmyPanel.classList.remove("active");
+        });
+
+        btnCmy.addEventListener("click", () => {
+            // ボタンのアクティブ状態を切り替え
+            btnCmy.classList.add("active");
+            btnRgb.classList.remove("active");
+            // パネルの表示を切り替え
+            cmyPanel.classList.add("active");
+            rgbPanel.classList.remove("active");
+        });
+
+
+
+
+
+
+
+
+        // --- 1. 正解（ターゲット）データを保持する変数 ---
+        let target = {
+            r: 0, g: 0, b: 0,
+            c: 0, m: 0, y: 0
+        };
+
+        // 5%刻みの乱数を作る関数 (0, 5, 10 ... 100)
+        function getRandom5Percent() {
+            return Math.floor(Math.random() * 11) * 10;
+        }
+
+        // 新しい問題を生成する関数
+        function generateNewQuestion() {
+            // RGBの正解値をランダムに決める
+            target.r = getRandom5Percent();
+            target.g = getRandom5Percent();
+            target.b = getRandom5Percent();
+
+            // RGBからCMYの正解値も自動計算する (CMY = 100 - RGB%)
+            target.c = 100 - target.r;
+            target.m = 100 - target.g;
+            target.y = 100 - target.b;
+
+            // お題ボックスの色を更新 (0〜255に変換して適用)
+            const targetBox = document.querySelector("#targetBox");
+            const r255 = Math.round((target.r / 100) * 255);
+            const g255 = Math.round((target.g / 100) * 255);
+            const b255 = Math.round((target.b / 100) * 255);
+            targetBox.style.backgroundColor = `rgb(${r255}, ${g255}, ${b255})`;
+
+            // ヒント表示をリセット（最初は隠す）
+            document.querySelectorAll(".hint-text").forEach(el => el.style.visibility = "hidden");
+            const resultMsg = document.querySelector("#resultMessage");
+            resultMsg.textContent = "";
+            resultMsg.style.visibility = "hidden";
+            document.querySelector("#nextBtn").style.display = "none";
+            document.querySelector("#submitBtn").style.display = "inline-block";
+
+            // スライダーを初期値にリセット
+            RGBsliders.r.value = 0; RGBsliders.g.value = 0; RGBsliders.b.value = 0;
+            CMYsliders.c.value = 0; CMYsliders.m.value = 0; CMYsliders.y.value = 0;
+
+            updateRGBColor();
+            updateCMYColor();
+        }
+
+
+        // --- 5. 回答ボタンの判定処理 ---
+        const submitBtn = document.querySelector("#submitBtn");
+        const nextBtn = document.querySelector("#nextBtn");
+        const resultMessage = document.querySelector("#resultMessage");
+
+        submitBtn.addEventListener("click", () => {
+            // 現在開いているタブがRGBかCMYかを判断して判定する
+            const isRgbMode = rgbPanel.classList.contains("active");
+            let isCorrect = false;
+
+            if (isRgbMode) {
+                // RGBの数値チェック
+                if (
+                    parseInt(RGBsliders.r.value) === target.r &&
+                    parseInt(RGBsliders.g.value) === target.g &&
+                    parseInt(RGBsliders.b.value) === target.b
+                ) {
+                    isCorrect = true;
+                }
+            } else {
+                // CMYの数値チェック
+                if (
+                    parseInt(CMYsliders.c.value) === target.c &&
+                    parseInt(CMYsliders.m.value) === target.m &&
+                    parseInt(CMYsliders.y.value) === target.y
+                ) {
+                    isCorrect = true;
+                }
+            }
+
+            resultMessage.style.visibility = "visible";
+
+            if (isCorrect) {
+                resultMessage.textContent = "🎉 正解！おめでとう！";
+                resultMessage.style.color = "#2ec4b6";
+                submitBtn.style.display = "none";
+                nextBtn.style.display = "inline-block";
+            } else {
+                resultMessage.textContent = "❌ 残念！不正解です。ヒントを参考にもう一度合わせてみよう！";
+                resultMessage.style.color = "#ff4d6d";
+
+                // 不正解の場合、スライダーの下に正解のパーセントをハイライト表示する
+                document.querySelector("#hintR span").textContent = target.r + "%";
+                document.querySelector("#hintG span").textContent = target.g + "%";
+                document.querySelector("#hintB span").textContent = target.b + "%";
+                document.querySelector("#hintC span").textContent = target.c + "%";
+                document.querySelector("#hintM span").textContent = target.m + "%";
+                document.querySelector("#hintY span").textContent = target.y + "%";
+
+                document.querySelectorAll(".hint-text").forEach(el => el.style.visibility = "visible");
+            }
+        });
+
+        // 次の問題ボタンの処理
+        nextBtn.addEventListener("click", () => {
+            generateNewQuestion();
+        });
+
+        // 最初の問題を生成
+        generateNewQuestion();
     </script>
 </body>
 </html>
