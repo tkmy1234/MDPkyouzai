@@ -10,28 +10,32 @@
         <h1>加法混色・減法混色</h1>
     </header>
 
-
     <main>
-        <h1>色あてゲーム</h1>
-        <h2>問題:下の「お題の色」と同じになるようにスライダーを動かそう</h2>
-        <div class="mode-buttons">
-            <button id="btnRgb" class="tab-btn active">光の三原色 (加法混色)</button>
-            <button id="btnCmy" class="tab-btn">色の三原色 (減法混色)</button>
+        <!-- ★色あてゲーム（左）と RGB/CMYボタン（右端）を横並びにする行 -->
+        <div class="title-mode-row">
+            <h1>色あてゲーム</h1>
+            <div class="mode-buttons">
+                <button id="btnRgb" class="small-btn tab-btn active">加法混色(RGB)</button>
+                <button id="btnCmy" class="small-btn tab-btn">減法混色(CMY)</button>
+            </div>
         </div>
 
-        
-
-        
+        <div class="title-mode-row">
+            <h2>問題:下の「お題の色」と同じになるようにスライダーを動かそう</h2>
+            <div class="difficulty-row">
+                <button id="btnNormal" class="small-btn diff-btn active">3色モード</button>
+                <button id="btnEasy" class="small-btn diff-btn">2色モード</button>
+            </div>
+        </div>
 
         <div class="viewer">
-
             <div class="app">
                 <h3>【お題の色】</h3>
                 <div id="targetBox" class="color-box question-color-box"></div>
                 <div class="action-area">
                     <button id="submitBtn" class="main-btn">回答する</button>
-                    <p id="resultMessage" class="result-msg"></p>
                     <button id="nextBtn" class="main-btn next-btn" style="display: none;">次の問題へ進む</button>
+                    <p id="resultMessage" class="result-msg"></p>
                 </div>
             </div>
 
@@ -42,7 +46,7 @@
                     <div class="color-box mixed-RGB-color-box"></div>
                     <div class="rgb-panel">
                         <label class="slider-row R" for="Rrange">
-                            <span>R 赤</span>
+                            <span id="labelR">R 赤</span>
                             <output id="RValue" for="Rrange">0%</output>
                         </label>
                         <input type="range" id="Rrange" class="Rrange" min="0" max="100" value="0" step="10">
@@ -50,14 +54,14 @@
                         <p class="hint-text" id="hintR">正解の赤: <span class="correct-val">--%</span></p>
 
                         <label class="slider-row G" for="Grange">
-                            <span>G 緑</span>
+                            <span id="labelG">G 緑</span>
                             <output id="GValue" for="Grange">0%</output>
                         </label>
                         <input type="range" id="Grange" class="Grange" min="0" max="100" value="0" step="10">
                         <p class="hint-text" id="hintG">正解の緑: <span class="correct-val">--%</span></p>
 
                         <label class="slider-row B" for="Brange">
-                            <span>B 青</span>
+                            <span id="labelB">B 青</span>
                             <output id="BValue" for="Brange">0%</output>
                         </label>
                         <input type="range" id="Brange" class="Brange" min="0" max="100" value="0" step="10">
@@ -72,7 +76,7 @@
                     <div class="color-box mixed-CMY-color-box"></div>
                     <div class="cmy-panel">
                         <label class="slider-row C" for="Crange">
-                            <span>C シアン</span>
+                            <span id="labelC">C シアン</span>
                             <output id="CValue" for="Crange">0%</output>
                         </label>
                         <input type="range" id="Crange" class="Crange" min="0" max="100" value="0" step="10">
@@ -80,7 +84,7 @@
                         <p class="hint-text" id="hintC">正解のシアン: <span class="correct-val">--%</span></p>
 
                         <label class="slider-row M" for="Mrange">
-                            <span>M マゼンタ</span>
+                            <span id="labelM">M マゼンタ</span>
                             <output id="MValue" for="Mrange">0%</output>
                         </label>
                         <input type="range" id="Mrange" class="Mrange" min="0" max="100" value="0" step="10">
@@ -88,7 +92,7 @@
                         <p class="hint-text" id="hintM">正解のマゼンタ: <span class="correct-val">--%</span></p>
 
                         <label class="slider-row Y" for="Yrange">
-                            <span>Y イエロー</span>
+                            <span id="labelY">Y イエロー</span>
                             <output id="YValue" for="Yrange">0%</output>
                         </label>
                         <input type="range" id="Yrange" class="Yrange" min="0" max="100" value="0" step="10">
@@ -102,14 +106,41 @@
         </div>
     </main>
     
-
-
-
     <footer>
         <p><small>&copy; 2026 nit メディアデザインプロジェクト　兼松クラス　教材アプリ開発班</small></p>
     </footer>
 
     <script>
+        // 難易度管理
+        let isEasyMode = false; // false: 通常モード, true: 簡単モード
+        let fixedKey = 'r';     // 固定する色のキー ('r', 'g', 'b')
+
+        const btnNormal = document.querySelector("#btnNormal");
+        const btnEasy = document.querySelector("#btnEasy");
+
+        btnNormal.addEventListener("click", () => {
+            isEasyMode = false;
+            btnNormal.classList.add("active");
+            btnEasy.classList.remove("active");
+            generateNewQuestion();
+        });
+
+        btnEasy.addEventListener("click", () => {
+            isEasyMode = true;
+            btnEasy.classList.add("active");
+            btnNormal.classList.remove("active");
+            generateNewQuestion();
+        });
+
+        function resetLabels() {
+            document.querySelector("#labelR").textContent = "R 赤";
+            document.querySelector("#labelG").textContent = "G 緑";
+            document.querySelector("#labelB").textContent = "B 青";
+            document.querySelector("#labelC").textContent = "C シアン";
+            document.querySelector("#labelM").textContent = "M マゼンタ";
+            document.querySelector("#labelY").textContent = "Y イエロー";
+        }
+
         const RGBsliders={
             r: document.querySelector("#Rrange"),
             g: document.querySelector("#Grange"),
@@ -131,8 +162,6 @@
             m: document.querySelector("#MValue"),
             y: document.querySelector("#YValue"),
         };
-
-        
 
         const rgbText=document.querySelector("#rgbText");
         const cmyText=document.querySelector("#cmyText");
@@ -178,13 +207,11 @@
             const m = 255 - g255;
             const y = 255 - b255;
 
-
             // CSS変数の値を書き換え
             // スライダーはRGBのままなので、CMYの値を直接代入はせずに、打ち消す光の量(RGBのフィルター)の値を代入
             document.documentElement.style.setProperty("--light-c", r255);
             document.documentElement.style.setProperty("--light-m", g255);
             document.documentElement.style.setProperty("--light-y", b255);
-
 
             // 画面上のパーセント表示を更新
             outputs.c.textContent = cPercent + "%";
@@ -192,7 +219,6 @@
             outputs.y.textContent = yPercent + "%";
             cmyText.textContent=`${c},${m},${y}`;
         }
-
 
         // 3. RGBスライダーが動かされた（input）ときに、関数を呼び出すイベントを設定
         Object.values(RGBsliders).forEach((RGBslider) => {
@@ -203,12 +229,6 @@
         Object.values(CMYsliders).forEach((CMYslider) => {
             CMYslider.addEventListener("input", updateCMYColor);
         });
-
-
-
-
-
-
 
         // --- 3. ボタンによるパネルの切り替え処理 ---
         const btnRgb = document.querySelector("#btnRgb");
@@ -234,13 +254,6 @@
             rgbPanel.classList.remove("active");
         });
 
-
-
-
-
-
-
-
         // --- 1. 正解（ターゲット）データを保持する変数 ---
         let target = {
             r: 0, g: 0, b: 0,
@@ -254,6 +267,8 @@
 
         // 新しい問題を生成する関数
         function generateNewQuestion() {
+            resetLabels(); // ★追加：ラベルを元に戻す
+
             // RGBの正解値をランダムに決める
             target.r = getRandom5Percent();
             target.g = getRandom5Percent();
@@ -263,6 +278,31 @@
             target.c = 100 - target.r;
             target.m = 100 - target.g;
             target.y = 100 - target.b;
+
+            // ★追加：一旦すべてのスライダーを操作可能にする
+            Object.values(RGBsliders).forEach(s => s.disabled = false);
+            Object.values(CMYsliders).forEach(s => s.disabled = false);
+
+            // ★追加：簡単モードなら1色をランダムに選んで正解値に固定・操作禁止にする
+            if (isEasyMode) {
+                const keys = ['r', 'g', 'b'];
+                fixedKey = keys[Math.floor(Math.random() * keys.length)];
+
+                // RGB側を固定
+                RGBsliders[fixedKey].value = target[fixedKey];
+                RGBsliders[fixedKey].disabled = true;
+                document.querySelector(`#label${fixedKey.toUpperCase()}`).textContent += " (固定)";
+
+                // CMY側の対応する色も固定 (r->c, g->m, b->y)
+                const cmyKey = fixedKey === 'r' ? 'c' : fixedKey === 'g' ? 'm' : 'y';
+                CMYsliders[cmyKey].value = target[cmyKey];
+                CMYsliders[cmyKey].disabled = true;
+                document.querySelector(`#label${cmyKey.toUpperCase()}`).textContent += " (固定)";
+            } else {
+                // 通常モード時はスライダーを0にリセット
+                RGBsliders.r.value = 0; RGBsliders.g.value = 0; RGBsliders.b.value = 0;
+                CMYsliders.c.value = 0; CMYsliders.m.value = 0; CMYsliders.y.value = 0;
+            }
 
             // お題ボックスの色を更新 (0〜255に変換して適用)
             const targetBox = document.querySelector("#targetBox");
@@ -279,14 +319,9 @@
             document.querySelector("#nextBtn").style.display = "none";
             document.querySelector("#submitBtn").style.display = "inline-block";
 
-            // スライダーを初期値にリセット
-            RGBsliders.r.value = 0; RGBsliders.g.value = 0; RGBsliders.b.value = 0;
-            CMYsliders.c.value = 0; CMYsliders.m.value = 0; CMYsliders.y.value = 0;
-
             updateRGBColor();
             updateCMYColor();
         }
-
 
         // --- 5. 回答ボタンの判定処理 ---
         const submitBtn = document.querySelector("#submitBtn");
@@ -351,5 +386,3 @@
     </script>
 </body>
 </html>
-
-
