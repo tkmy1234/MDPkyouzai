@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <title>解説</title>
     <link href="index.css" rel="stylesheet" type="text/css">
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="Drift.js"></script>
 </head>
 
 <body>
@@ -47,8 +49,14 @@
 
         <div class="images">
             <img src="./images/加法混色1.jpeg">
-            <img src="">
+            <img class="kakudai" src="./images/スマホ.jpeg" data-zoom="./images/スマホ拡大.jpeg">
         </div>
+        <script>
+            new Drift(document.querySelector('.kakudai'), {
+                zoomFactor: 1,
+                inlinePane: true
+            });
+        </script>
 
         <h2>減法混色</h2>
         <p>
@@ -65,8 +73,14 @@
 
         <div class="images">
             <img src="./images/減法混色1.jpeg">
-            <img src="">
+            <img class="kakudai2" src="./images/印刷物.jpeg" data-zoom="./images/印刷物拡大.jpeg">
         </div>
+        <script>
+            new Drift(document.querySelector('.kakudai2'), {
+                zoomFactor: 1,
+                inlinePane: true
+            });
+        </script>
 
         <h2>実際に体験してみよう</h2>
         <div class="content">
