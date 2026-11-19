@@ -111,6 +111,19 @@
     </footer>
 
     <script>
+        // 音声ファイルの読み込み（実際のファイル名・パスに合わせて変更してください）
+        const correctSound = new Audio("sounds/correct.mp3");
+        const wrongSound = new Audio("sounds/wrong.mp3");
+
+        // 効果音を再生する共通関数
+        function playAudio(audioElement) {
+            if (!audioElement) return;
+            audioElement.currentTime = 0; // 途中からにならないよう先頭に戻す
+            audioElement.play().catch((error) => {
+            console.log("音声の再生に失敗しました:", error);
+            });
+        }
+
         // 難易度管理
         let isEasyMode = false; // false: 通常モード, true: 簡単モード
         let fixedKey = 'r';     // 固定する色のキー ('r', 'g', 'b')
@@ -360,9 +373,11 @@
                 resultMessage.style.color = "#2ec4b6";
                 submitBtn.style.display = "none";
                 nextBtn.style.display = "inline-block";
+                playAudio(correctSound); // ★正解の音声ファイルを再生
             } else {
                 resultMessage.textContent = "❌ 残念！不正解です。答えを参考にもう一度合わせてみよう！";
                 resultMessage.style.color = "#ff4d6d";
+                playAudio(wrongSound); // ★不正解の音声ファイルを再生
 
                 // 不正解の場合、スライダーの下に正解のパーセントをハイライト表示する
                 document.querySelector("#hintR span").textContent = target.r + "%";
