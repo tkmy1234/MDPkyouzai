@@ -11,7 +11,7 @@
     </header>
 
     <main>
-        <!-- ★色あてゲーム（左）と RGB/CMYボタン（右端）を横並びにする行 -->
+        <!-- タイトル行とRGB/CMY切り替えボタン -->
         <div class="title-mode-row">
             <h1>色あてゲーム</h1>
             <div class="mode-buttons">
@@ -20,6 +20,7 @@
             </div>
         </div>
 
+        <!-- 問題文と難易度切り替えボタン -->
         <div class="title-mode-row">
             <h2>問題:下の「お題の色」と同じになるようにスライダーを動かそう</h2>
             <div class="difficulty-row">
@@ -28,7 +29,9 @@
             </div>
         </div>
 
+        <!-- お題カードと回答カードの2カラム表示 -->
         <div class="viewer">
+            <!-- 左側：お題の色パネル -->
             <div class="app">
                 <h3>【お題の色】</h3>
                 <div id="targetBox" class="color-box question-color-box"></div>
@@ -39,8 +42,9 @@
                 </div>
             </div>
 
+            <!-- 右側：作った色パネル（RGB / CMY） -->
             <div class="app-right-container">
-                <!-- 加法混色 -->
+                <!-- 加法混色パネル -->
                 <div class="app panel active" id="rgbPanel">
                     <h3>あなたの作った色</h3>
                     <div class="color-box mixed-RGB-color-box"></div>
@@ -50,7 +54,6 @@
                             <output id="RValue" for="Rrange">0%</output>
                         </label>
                         <input type="range" id="Rrange" class="Rrange" min="0" max="100" value="0" step="10">
-                        <!-- 正解のヒント表示用 -->
                         <p class="hint-text" id="hintR">正解の赤: <span class="correct-val">--%</span></p>
 
                         <label class="slider-row G" for="Grange">
@@ -66,11 +69,12 @@
                         </label>
                         <input type="range" id="Brange" class="Brange" min="0" max="100" value="0" step="10">
                         <p class="hint-text" id="hintB">正解の青: <span class="correct-val">--%</span></p>
+
                         <p class="rgb-readout">RGB(<span id="rgbText">0,0,0</span>)</p>
                     </div>
                 </div>
-    
-                <!-- 減法混色 -->
+
+                <!-- 減法混色パネル -->
                 <div class="app panel" id="cmyPanel">
                     <h3>あなたの作った色</h3>
                     <div class="color-box mixed-CMY-color-box"></div>
@@ -80,7 +84,6 @@
                             <output id="CValue" for="Crange">0%</output>
                         </label>
                         <input type="range" id="Crange" class="Crange" min="0" max="100" value="0" step="10">
-                        <!-- ★追加：CMYのヒント表示用 -->
                         <p class="hint-text" id="hintC">正解のシアン: <span class="correct-val">--%</span></p>
 
                         <label class="slider-row M" for="Mrange">
@@ -88,7 +91,6 @@
                             <output id="MValue" for="Mrange">0%</output>
                         </label>
                         <input type="range" id="Mrange" class="Mrange" min="0" max="100" value="0" step="10">
-                        <!-- ★追加 -->
                         <p class="hint-text" id="hintM">正解のマゼンタ: <span class="correct-val">--%</span></p>
 
                         <label class="slider-row Y" for="Yrange">
@@ -96,7 +98,6 @@
                             <output id="YValue" for="Yrange">0%</output>
                         </label>
                         <input type="range" id="Yrange" class="Yrange" min="0" max="100" value="0" step="10">
-                        <!-- ★追加 -->
                         <p class="hint-text" id="hintY">正解のイエロー: <span class="correct-val">--%</span></p>
 
                         <p class="cmy-readout">CMY(<span id="cmyText">0,0,0</span>)</p>
@@ -104,82 +105,96 @@
                 </div>
             </div>
         </div>
+
+        <!-- 画面中央に〇×を表示する要素 -->
+        <div id="centerMark" class="center-mark" aria-hidden="true"></div>
     </main>
-    
+
+    <!-- フッター -->
     <footer>
-        <p><small>&copy; 2026 nit メディアデザインプロジェクト　兼松クラス　教材アプリ開発班</small></p>
+        <p><small>© 2026 nit メディアデザインプロジェクト 兼松クラス 教材アプリ開発班</small></p>
     </footer>
 
     <script>
-        // 音声ファイルの読み込み（実際のファイル名・パスに合わせて変更してください）
-        const correctSound = new Audio("sounds/correct.mp3");
-        const wrongSound = new Audio("sounds/wrong.mp3");
-
-        // 効果音を再生する共通関数
-        function playAudio(audioElement) {
-            if (!audioElement) return;
-            audioElement.currentTime = 0; // 途中からにならないよう先頭に戻す
-            audioElement.play().catch((error) => {
-            console.log("音声の再生に失敗しました:", error);
-            });
-        }
-
-        // 難易度管理
-        let isEasyMode = false; // false: 通常モード, true: 簡単モード
-        let fixedKey = 'r';     // 固定する色のキー ('r', 'g', 'b')
-
-        const btnNormal = document.querySelector("#btnNormal");
-        const btnEasy = document.querySelector("#btnEasy");
-
-        btnNormal.addEventListener("click", () => {
-            isEasyMode = false;
-            btnNormal.classList.add("active");
-            btnEasy.classList.remove("active");
-            generateNewQuestion();
-        });
-
-        btnEasy.addEventListener("click", () => {
-            isEasyMode = true;
-            btnEasy.classList.add("active");
-            btnNormal.classList.remove("active");
-            generateNewQuestion();
-        });
-
-        function resetLabels() {
-            document.querySelector("#labelR").textContent = "R 赤";
-            document.querySelector("#labelG").textContent = "G 緑";
-            document.querySelector("#labelB").textContent = "B 青";
-            document.querySelector("#labelC").textContent = "C シアン";
-            document.querySelector("#labelM").textContent = "M マゼンタ";
-            document.querySelector("#labelY").textContent = "Y イエロー";
-        }
-
-        const RGBsliders={
+        /* =========================================
+           1. DOM要素の取得・状態変数
+           ========================================= */
+        const RGBsliders = {
             r: document.querySelector("#Rrange"),
             g: document.querySelector("#Grange"),
             b: document.querySelector("#Brange"),
         };
 
-        const CMYsliders={
+        const CMYsliders = {
             c: document.querySelector("#Crange"),
             m: document.querySelector("#Mrange"),
             y: document.querySelector("#Yrange"),
         };
 
-        const outputs={
+        const outputs = {
             r: document.querySelector("#RValue"),
             g: document.querySelector("#GValue"),
             b: document.querySelector("#BValue"),
-
             c: document.querySelector("#CValue"),
             m: document.querySelector("#MValue"),
             y: document.querySelector("#YValue"),
         };
 
-        const rgbText=document.querySelector("#rgbText");
-        const cmyText=document.querySelector("#cmyText");
+        const rgbText = document.querySelector("#rgbText");
+        const cmyText = document.querySelector("#cmyText");
 
-        // 2. RGBスライダーが動いたときに実行される関数
+        const btnRgb = document.querySelector("#btnRgb");
+        const btnCmy = document.querySelector("#btnCmy");
+        const rgbPanel = document.querySelector("#rgbPanel");
+        const cmyPanel = document.querySelector("#cmyPanel");
+
+        const btnNormal = document.querySelector("#btnNormal");
+        const btnEasy = document.querySelector("#btnEasy");
+
+        const submitBtn = document.querySelector("#submitBtn");
+        const nextBtn = document.querySelector("#nextBtn");
+        const resultMessage = document.querySelector("#resultMessage");
+        const centerMark = document.querySelector("#centerMark");
+
+        // 音声ファイルの読み込み
+        const correctSound = new Audio("sounds/correct.mp3");
+        const wrongSound = new Audio("sounds/wrong.mp3");
+
+        // 難易度管理用の状態変数
+        let isEasyMode = false; // false: 通常モード, true: 簡単モード
+        let fixedKey = 'r';     // 固定する色のキー ('r', 'g', 'b')
+
+        // 正解（ターゲット）データを保持する変数
+        let target = {
+            r: 0, g: 0, b: 0,
+            c: 0, m: 0, y: 0
+        };
+
+        /* =========================================
+           2. 効果音・中央〇×表示の関数
+           ========================================= */
+        // 効果音を再生する共通関数
+        function playAudio(audioElement) {
+            if (!audioElement) return;
+            audioElement.currentTime = 0; // 途中からにならないよう先頭に戻す
+            audioElement.play().catch((error) => {
+                console.log("音声の再生に失敗しました:", error);
+            });
+        }
+
+        // 画面中央に〇または×を表示する関数
+        function showCenterMark(symbol, type) {
+            if (!centerMark) return;
+            centerMark.textContent = symbol;
+            centerMark.classList.remove("correct", "wrong");
+            void centerMark.offsetWidth; // 連続で押したときもアニメーションを再生し直す
+            centerMark.classList.add(type); // "correct" または "wrong"
+        }
+
+        /* =========================================
+           3. スライダー連動・色更新の関数
+           ========================================= */
+        // RGBスライダーが動いたときに実行される関数
         function updateRGBColor() {
             const rPercent = RGBsliders.r.value;
             const gPercent = RGBsliders.g.value;
@@ -199,10 +214,10 @@
             outputs.r.textContent = rPercent + "%";
             outputs.g.textContent = gPercent + "%";
             outputs.b.textContent = bPercent + "%";
-            rgbText.textContent=`${r},${g},${b}`;
+            rgbText.textContent = `${r},${g},${b}`;
         }
 
-        // 2. CMYスライダーが動いたときに実行される関数
+        // CMYスライダーが動いたときに実行される関数
         function updateCMYColor() {
             const cPercent = CMYsliders.c.value;
             const mPercent = CMYsliders.m.value;
@@ -230,48 +245,21 @@
             outputs.c.textContent = cPercent + "%";
             outputs.m.textContent = mPercent + "%";
             outputs.y.textContent = yPercent + "%";
-            cmyText.textContent=`${c},${m},${y}`;
+            cmyText.textContent = `${c},${m},${y}`;
         }
 
-        // 3. RGBスライダーが動かされた（input）ときに、関数を呼び出すイベントを設定
-        Object.values(RGBsliders).forEach((RGBslider) => {
-            RGBslider.addEventListener("input", updateRGBColor);
-        });
-
-        // 3. CMYスライダーが動かされた（input）ときに、関数を呼び出すイベントを設定
-        Object.values(CMYsliders).forEach((CMYslider) => {
-            CMYslider.addEventListener("input", updateCMYColor);
-        });
-
-        // --- 3. ボタンによるパネルの切り替え処理 ---
-        const btnRgb = document.querySelector("#btnRgb");
-        const btnCmy = document.querySelector("#btnCmy");
-        const rgbPanel = document.querySelector("#rgbPanel");
-        const cmyPanel = document.querySelector("#cmyPanel");
-
-        btnRgb.addEventListener("click", () => {
-            // ボタンのアクティブ状態を切り替え
-            btnRgb.classList.add("active");
-            btnCmy.classList.remove("active");
-            // パネルの表示を切り替え
-            rgbPanel.classList.add("active");
-            cmyPanel.classList.remove("active");
-        });
-
-        btnCmy.addEventListener("click", () => {
-            // ボタンのアクティブ状態を切り替え
-            btnCmy.classList.add("active");
-            btnRgb.classList.remove("active");
-            // パネルの表示を切り替え
-            cmyPanel.classList.add("active");
-            rgbPanel.classList.remove("active");
-        });
-
-        // --- 1. 正解（ターゲット）データを保持する変数 ---
-        let target = {
-            r: 0, g: 0, b: 0,
-            c: 0, m: 0, y: 0
-        };
+        /* =========================================
+           4. 問題生成・ラベル初期化の関数
+           ========================================= */
+        // スライダーのラベル表記を初期状態に戻す関数
+        function resetLabels() {
+            document.querySelector("#labelR").textContent = "R 赤";
+            document.querySelector("#labelG").textContent = "G 緑";
+            document.querySelector("#labelB").textContent = "B 青";
+            document.querySelector("#labelC").textContent = "C シアン";
+            document.querySelector("#labelM").textContent = "M マゼンタ";
+            document.querySelector("#labelY").textContent = "Y イエロー";
+        }
 
         // 5%刻みの乱数を作る関数 (0, 5, 10 ... 100)
         function getRandom5Percent() {
@@ -336,11 +324,54 @@
             updateCMYColor();
         }
 
-        // --- 5. 回答ボタンの判定処理 ---
-        const submitBtn = document.querySelector("#submitBtn");
-        const nextBtn = document.querySelector("#nextBtn");
-        const resultMessage = document.querySelector("#resultMessage");
+        /* =========================================
+           5. イベントリスナー登録
+           ========================================= */
+        // RGBスライダーが動かされたときのイベント
+        Object.values(RGBsliders).forEach((RGBslider) => {
+            RGBslider.addEventListener("input", updateRGBColor);
+        });
 
+        // CMYスライダーが動かされたときのイベント
+        Object.values(CMYsliders).forEach((CMYslider) => {
+            CMYslider.addEventListener("input", updateCMYColor);
+        });
+
+        // RGB / CMY パネル切り替えボタンの処理
+        btnRgb.addEventListener("click", () => {
+            // ボタンのアクティブ状態を切り替え
+            btnRgb.classList.add("active");
+            btnCmy.classList.remove("active");
+            // パネルの表示を切り替え
+            rgbPanel.classList.add("active");
+            cmyPanel.classList.remove("active");
+        });
+
+        btnCmy.addEventListener("click", () => {
+            // ボタンのアクティブ状態を切り替え
+            btnCmy.classList.add("active");
+            btnRgb.classList.remove("active");
+            // パネルの表示を切り替え
+            cmyPanel.classList.add("active");
+            rgbPanel.classList.remove("active");
+        });
+
+        // 難易度切り替えボタンの処理
+        btnNormal.addEventListener("click", () => {
+            isEasyMode = false;
+            btnNormal.classList.add("active");
+            btnEasy.classList.remove("active");
+            generateNewQuestion();
+        });
+
+        btnEasy.addEventListener("click", () => {
+            isEasyMode = true;
+            btnEasy.classList.add("active");
+            btnNormal.classList.remove("active");
+            generateNewQuestion();
+        });
+
+        // 回答ボタンの判定処理
         submitBtn.addEventListener("click", () => {
             // 現在開いているタブがRGBかCMYかを判断して判定する
             const isRgbMode = rgbPanel.classList.contains("active");
@@ -374,10 +405,12 @@
                 submitBtn.style.display = "none";
                 nextBtn.style.display = "inline-block";
                 playAudio(correctSound); // ★正解の音声ファイルを再生
+                showCenterMark("〇", "correct"); // ★画面中央に〇を表示
             } else {
                 resultMessage.textContent = "❌ 残念！不正解です。答えを参考にもう一度合わせてみよう！";
                 resultMessage.style.color = "#ff4d6d";
                 playAudio(wrongSound); // ★不正解の音声ファイルを再生
+                showCenterMark("×", "wrong"); // ★画面中央に×を表示
 
                 // 不正解の場合、スライダーの下に正解のパーセントをハイライト表示する
                 document.querySelector("#hintR span").textContent = target.r + "%";
@@ -396,6 +429,9 @@
             generateNewQuestion();
         });
 
+        /* =========================================
+           6. 初期表示の実行
+           ========================================= */
         // 最初の問題を生成
         generateNewQuestion();
     </script>
