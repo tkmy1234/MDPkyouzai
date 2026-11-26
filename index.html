@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <title>解説</title>
     <link href="index.css" rel="stylesheet" type="text/css">
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="Drift.js"></script>
 </head>
 
 <body>
@@ -12,12 +14,89 @@
         <h1>加法混色・減法混色</h1>
     </header>
 
-    <div id="main">
-        <h2>ようこそ！</h2>
-        <p>ここのサイトでは、加法混色・減法混色について学べます。​<br />
-            解説を読んでクイズに挑戦してみましょう。​</p>
+    <div id="int">
+        <h3>このサイトでは、加法混色・減法混色について学べます。​<br />
+            解説を読んだあとは、体験コンテンツで遊んでみてください！​</h3>
     </div>
 
+    <div class="main">
+        <h2>色の仕組み</h2>
+        <p> 太陽のもとではリンゴは赤く見えますが、暗闇の中では黒く見えます。それは、私たちが見ているモノの「色」は「光の反射光」だからです。<br />
+            私たちの目には「かん体」という光の明るさを感じる細胞と、「すい体」という光の色を感じる細胞があります。さらにすい体の中には、赤・青・緑の光の色を感じ取るすい体があり、その三つの光の組み合わせで私たちは色を見ています。<br />
+            では、なぜリンゴは赤く見えるのかというと、リンゴは青や緑の要素を吸収し、赤の要素を反射する性質があるため赤く見えるのです。
+        </p>
+
+        <div class="images">
+            <img src="./images/色の仕組み1.jpeg">
+            <img src="./images/色の仕組み2.jpeg">
+        </div>
+
+        <h2>三原色</h2>
+        <p>多くの色はほかの色を混ぜることで作れますが、混色をしても作り出せない色があります。これを原色といいます。
+            なかでも、混ぜ合わせることですべての色を表すことのできる基本の三色を「三原色」といいます。
+            三原色には太陽光やスマホの画面などの光そのものを混ぜる光の三原色と、絵具やインクなどの光の反射光をまぜる色の三原色があります。
+        </p>
+
+        <h2>混色</h2>
+        <p>色の混ぜ方は主に加法混色、減法混色の2種類が存在します。</p>
+
+        <h2>加法混色</h2>
+        <p>加法混色とは、光の三原色を使用した色の混ぜ方です。
+            光の三原色は、赤(Red)、緑(Green)、青(Blue)の頭文字からRGBと呼びます。
+            原色であるRGBそれぞれ単体の光源が重なり合う混色です。色を混ぜるたびに明るくなり、すべての色が合わさると白色になります。
+            スマホやテレビの画面でよく使用され、RGBを表示するとても小さなライトが密集しているため、実際には3色だけでも多くの異なる色を知覚するような錯覚を起こします。(※1)
+        </p>
+
+        <div class="images">
+            <img src="./images/加法混色.jpeg">
+            <img class="kakudai" src="./images/スマホ.jpeg" data-zoom="./images/スマホ拡大.jpeg">
+        </div>
+        <script>
+            new Drift(document.querySelector('.kakudai'), {
+                zoomFactor: 1,
+                inlinePane: true
+            });
+        </script>
+
+        <h2>減法混色</h2>
+        <p>
+            減法混色とは、色の三原色を使用した色の混ぜ方です。
+            色の三原色は、シアン(Cyan)、マゼンタ(Magenta)、イエロー(Yellow)の頭文字からCMYと呼びます。
+            RGBをすべて含む白色の光源に、特定の色だけ吸収する「フィルタ」を通す混色です。
+            絵具やインク、りんごなど物体には特定の色の光を吸収する性質（フィルタ）を持ちます。そのため、光の中から特定の色だけ吸収する「フィルタ」を通す混色です。<br />
+
+            シアンは、赤を吸収し緑と青を透過するフィルタです。
+            マゼンタは、緑を吸収し赤と青を透過するフィルタです。
+            イエローは、青を吸収し赤と緑を透過するフィルタです。
+            つまり、色を混ぜるたびに暗くなり、CMYすべてを混ぜると赤緑青すべての要素が吸収されるため黒色になるのです。<br>
+
+            印刷物は一般にCMY(+K)のインクを使って表現されています。印刷物の表面に細かなインクの粒子が重なり合うことで色を見せています。(※2)
+        </p>
+        </p>
+
+        <div class="images">
+            <img src="./images/減法混色.jpeg">
+            <img class="kakudai2" src="./images/印刷物.jpeg" data-zoom="./images/印刷物拡大.jpeg">
+        </div>
+        <script>
+            new Drift(document.querySelector('.kakudai2'), {
+                zoomFactor: 1,
+                inlinePane: true
+            });
+        </script>
+
+        <h2>実際に体験してみよう</h2>
+        <div class="content">
+            <div class="contentA">
+                <a class="btn" href="./slider.html">スライダーへ</a>
+                <p>加法混色・減法混色の違いを体験できます</p>
+            </div>
+            <div class="contentB">
+                <a class="btn" href="./game.html">色あてゲームへ</a>
+                <p>指定された色をスライダーで作ってみましょう</p>
+            </div>
+        </div>
+    </div>
 
     <footer>
         <p><small>&copy; 2026 nit メディアデザインプロジェクト　兼松クラス　教材アプリ開発班</small></p>
