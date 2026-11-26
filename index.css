@@ -1,0 +1,38 @@
+@charset "UTF-8";
+
+header {
+    background-color: #6283C2;
+    color: white;
+    text-align: center;
+    padding: 20px;
+}
+
+header h1 {
+    font-size: 2em;
+}
+
+header p {
+    font-size: 20px;
+}
+
+body {
+    font-family: '游明朝';
+    background-color: #FFFFFF;
+    margin: 0;
+    padding: 0;
+}
+
+#main {
+    padding: 10px 20px;
+    margin-left: 20px;
+}
+
+footer {
+    background-color: #6283C2;
+    padding: 50px;
+}
+
+footer p {
+    color: white;
+
+}

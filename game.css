@@ -1,0 +1,382 @@
+@charset "UTF-8";
+
+/* =========================================
+   1. ページ全体の基本レイアウト
+   ========================================= */
+body {
+  font-family: '游明朝';
+  background-color: #FFFFFF;
+  margin: 0;
+  padding: 0;
+}
+
+header {
+  background-color: #6283C2;
+  color: white;
+  text-align: center;
+  padding: 20px;
+}
+
+header h1 {
+  font-size: 2em;
+}
+
+header p {
+  font-size: 20px;
+}
+
+main {
+  max-width: 1200px; /* 全体の最大横幅 */
+  margin: 0 auto; /* 画面中央に配置 */
+  padding: 5px 10px;
+  box-sizing: border-box;
+}
+
+footer {
+  background-color: #6283C2;
+  padding: 50px;
+}
+
+footer p {
+  color: white;
+}
+
+/* =========================================
+   2. タイトル行・モード切替・難易度ボタン
+   ========================================= */
+.title-mode-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.title-mode-row h1 {
+  margin: 0;
+}
+
+.title-mode-row h2 {
+  margin: 0;
+}
+
+.mode-buttons {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+/* 上段：加法混色 / 減法混色 ボタンの並びを均等2列にする */
+.title-mode-row .mode-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 0;
+  width: 260px; /* 上下で同じ横幅にするための基準幅 */
+}
+
+/* 下段：3色 / 2色 ボタンも上段と同じ横幅・均等2列にして右端に揃える */
+.difficulty-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-left: auto; /* 右端に押し出す */
+  margin-bottom: 16px;
+  width: 260px; /* 上段と同じ幅にして左右差をなくす */
+}
+
+.difficulty-bar {
+  display: flex;
+  justify-content: flex-end; /* 右寄せ */
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.tab-btn {
+  flex: 1;
+  padding: 12px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  border: 2px solid #6283C2;
+  background-color: #ffffff;
+  color: #6283C2;
+  border-radius: 8px;
+  transition: all 0.2s;
+}
+
+/* ボタンが選ばれているときの色 */
+.tab-btn.active {
+  background-color: #6283C2;
+  color: #ffffff;
+}
+
+/* 小さめの難易度ボタン */
+.diff-btn {
+  padding: 6px 12px;
+  font-size: 0.85rem;
+  font-weight: bold;
+  cursor: pointer;
+  border: 1.5px solid #6283C2;
+  background-color: #ffffff;
+  color: #6283C2;
+  border-radius: 6px;
+  transition: all 0.2s;
+}
+
+.diff-btn.active {
+  background-color: #6283C2;
+  color: #ffffff;
+}
+
+/* 共通の小さめボタンサイズ */
+.small-btn {
+  width: 100%;
+  padding: 6px 12px;
+  font-size: 0.85rem;
+  font-weight: bold;
+  cursor: pointer;
+  border: 1.5px solid #6283C2;
+  background-color: #ffffff;
+  color: #6283C2;
+  border-radius: 6px;
+  transition: all 0.2s;
+  box-sizing: border-box;
+}
+
+.small-btn.active {
+  background-color: #6283C2;
+  color: #ffffff;
+}
+
+/* =========================================
+   3. メインパネル・色表示ボックス
+   ========================================= */
+:root {
+  /* JavaScriptからリアルタイムに書き換えられる数値 */
+  --light-r: 0;
+  --light-g: 0;
+  --light-b: 0;
+
+  --light-c: 255;
+  --light-m: 255;
+  --light-y: 255;
+}
+
+.viewer {
+  width: 100%;
+  margin: 20px auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  align-items: stretch; /* 左右のカラムの高さを自動で同じにする */
+  box-sizing: border-box;
+}
+
+.app-right-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.app {
+  background: #ffffff;
+  padding: 32px;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(162, 158, 158, 0.5);
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+.app h3 {
+  margin: 0 0 16px 0;
+  font-size: 1.2rem;
+  text-align: center;
+  color: #333;
+}
+
+/* パネルの表示・非表示の切り替え */
+.panel {
+  display: none; /* 初期状態では両方とも隠す */
+}
+
+.panel.active {
+  display: flex; /* activeが付いているパネルだけを表示する */
+}
+
+/* 色が変わる四角いボックス */
+.color-box {
+  width: 100%;
+  height: 140px;
+  border-radius: 8px;
+  margin-bottom: 24px;
+  border: 1px solid rgba(0, 0, 0, 1);
+  box-sizing: border-box;
+  transition: background-color 50ms linear;
+}
+
+.mixed-RGB-color-box {
+  background-color: rgb(var(--light-r), var(--light-g), var(--light-b));
+}
+
+.mixed-CMY-color-box {
+  background-color: rgb(var(--light-c), var(--light-m), var(--light-y));
+}
+
+/* =========================================
+   4. スライダー・数値表示・ヒント
+   ========================================= */
+.rgb-panel {
+  display: flex;
+  flex-direction: column;
+}
+
+.cmy-panel {
+  display: flex;
+  flex-direction: column;
+}
+
+.slider-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  font-weight: bold;
+}
+
+.slider-row.R { color: #ff0000; }
+.slider-row.G { color: #00ff00; }
+.slider-row.B { color: #0000ff; }
+
+.slider-row.C { color: #00a1e9; }
+.slider-row.M { color: #e4007f; }
+.slider-row.Y { color: #ffdc00; }
+
+output {
+  font-family: monospace;
+}
+
+.RGBsliders {
+  width: 100%;
+  cursor: pointer;
+}
+
+.Rrange { accent-color: #ff0000; }
+.Grange { accent-color: #00ff00; }
+.Brange { accent-color: #0000ff; }
+
+.Crange { accent-color: #00a1e9; }
+.Mrange { accent-color: #e4007f; }
+.Yrange { accent-color: #ffdc00; }
+
+/* 不正解時のヒント（ハイライト）テキスト */
+.hint-text {
+  font-size: 0.9rem;
+  color: #ff4d6d;
+  font-weight: bold;
+  margin: 0 0 12px 0;
+  height: 1.2em; /* 1行分の高さを常に確保 */
+  visibility: hidden; /* 最初は透明にして場所だけ残す */
+}
+
+.correct-val {
+  background-color: #ffe5ed;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+/* =========================================
+   5. 回答エリア・ボタン・結果メッセージ
+   ========================================= */
+/* アクションエリア（回答ボタン・メッセージ・次の問題ボタン） */
+.action-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: auto;
+  margin-bottom: auto;
+  padding-top: 20px;
+}
+
+.main-btn {
+  padding: 12px 30px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 8px;
+  border: none;
+  background-color: #6283C2;
+  color: white;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  transition: background-color 0.2s;
+}
+
+.main-btn:hover {
+  background-color: #4f6ca8;
+}
+
+.next-btn {
+  background-color: #2ec4b6;
+}
+
+.next-btn:hover {
+  background-color: #259d92;
+}
+
+.result-msg {
+  font-size: 1.05rem;
+  font-weight: bold;
+  margin-top: 16px; /* ボタンと文字のあいだの余白 */
+  margin-bottom: 0;
+  min-height: 2.8em;
+  visibility: hidden;
+}
+
+/* =========================================
+   6. 画面中央の〇×表示とアニメーション
+   ========================================= */
+.center-mark {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.7);
+  font-size: 15rem;
+  font-weight: bold;
+  line-height: 1;
+  opacity: 0;
+  pointer-events: none; /* 表示中も下のボタンなどを押せるようにする */
+  z-index: 999;
+}
+
+.center-mark.correct {
+  color: #2ec4b6;
+  text-shadow: 0 6px 24px rgba(46, 196, 182, 0.35);
+  animation: markPopFade 1s ease forwards;
+}
+
+.center-mark.wrong {
+  color: #ff4d6d;
+  text-shadow: 0 6px 24px rgba(255, 77, 109, 0.35);
+  animation: markPopFade 1s ease forwards;
+}
+
+@keyframes markPopFade {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.6);
+  }
+  25% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.08);
+  }
+  70% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.95);
+  }
+}
